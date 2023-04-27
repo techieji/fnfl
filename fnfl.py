@@ -11,10 +11,11 @@ def process_expr(line):
 
 s = '''
 def fn(x):
-    v = @x |> &.upper() \
-           |> &.split() \
-           |> print(&)  \
+    v = @(@x |> &.split)() |> print(&)
     return v
 '''
 
-print(re.sub(PIPE, lambda m: process_expr(m.group(0)[1:]), s))
+s, n = re.subn(PIPE, lambda m: process_expr(m.group(0)[1:]), s)
+while n != 0:
+    s, n = re.subn(PIPE, lambda m: process_expr(m.group(0)[1:]), s)
+print(s)
