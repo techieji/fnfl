@@ -20,8 +20,6 @@ def process_operator(_op):
     op = _op[2:-1]
     return f"(lambda l, r='': eval('{{l}}{op}{{r}}'.format(l=repr(l), r=repr(r) if r else r)))"
 
-s = ''
-
 def repeat_sub(regex, fn):
     def f(s):
         n = 1
