@@ -1,9 +1,11 @@
 from functools import reduce
-import re
+import regex as re
+# import re
 from random import randint
 
 PIPE = re.compile(r'\@.*(|>[^\(\)\[\]\{\}]*)*')
-OPERATOR = re.compile(r'@\(.*?\)')
+OPERATOR = re.compile(r'@(\((?:[^)(]+|(?1))*+\))')
+# OPERATOR = re.compile(r'@\(.*\)')
 
 # Features:
 # PIPE:     @x |> y
@@ -31,4 +33,6 @@ def repeat_sub(regex, fn):
 pipefy = repeat_sub(PIPE, process_pipe)
 operatorify = repeat_sub(OPERATOR, process_operator)
 
-print(eval(operatorify('@(.split)("test string")()')))
+s = '@(.split())("test string")'
+print(eval(operatorify(s)))
+# print(OPERATOR.findall(s))
