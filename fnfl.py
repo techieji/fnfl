@@ -3,7 +3,7 @@ import re
 from random import randint
 
 PIPE = re.compile(r'\@.*(|>[^\(\)\[\]\{\}]*)*')
-OPERATOR = re.compile(r'@\(.*\)')
+OPERATOR = re.compile(r'@\(.*?\)')
 
 # Features:
 # PIPE:     @x |> y
@@ -16,7 +16,7 @@ def process_pipe(line):
 
 def process_operator(_op):
     op = _op[2:-1]
-    return f"(lambda l, r='': eval('{{l}}{op}{{r}}'.format(l=l, r=r)))"
+    return f"(lambda l, r='': eval('{{l}}{op}{{r}}'.format(l=repr(l), r=repr(r) if r else r)))"
 
 s = ''
 
@@ -31,4 +31,4 @@ def repeat_sub(regex, fn):
 pipefy = repeat_sub(PIPE, process_pipe)
 operatorify = repeat_sub(OPERATOR, process_operator)
 
-print(operatorify('@(.access)'))
+print(eval(operatorify('@(.split)("test string")()')))
